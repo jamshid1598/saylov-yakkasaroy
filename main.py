@@ -291,6 +291,32 @@ def pasport_data(update, context):
     return STATE_STATION
 
 
+def full_name(voter):
+    fish=''
+    f_name=None
+    s_name=None
+    th_name=None
+    try:
+        f_name=voter['f_name']
+    except:
+        pass
+    try:
+        s_name=voter['s_name']
+    except:
+        pass
+    try:
+        th_name=voter['th_name']
+    except:
+        pass
+    if f_name:
+        fish+=f_name
+    if s_name:
+        fish=fish+" "+s_name
+    if th_name:
+        fish=fish+" "+th_name
+    return fish
+
+
 # STATE_PASPORT_DATA callback function
 def check_voter_pasword(update, context):
     # query=update.callback_query
@@ -298,14 +324,12 @@ def check_voter_pasword(update, context):
     # lang=UZ
 
     voter=check_voter_by_pasport(update.message.text)
-
+    print(voter)
     if voter:
-        url_website = str(voter['polling_station_number'])+'.'+WEBSITE_ADDRESS
+        url_website = str(voter['station'])+'.'+WEBSITE_ADDRESS
 
-        station_message = "{} \n\n{} {} - {} \n\n{} {}".format(
-            voter['voter_fish'],
-            TEXT_STATION_NUMBER[lang], voter['polling_station_number'], voter['polling_station'],
-            TEXT_STATION_WEB[lang], url_website
+        station_message = "<b>FISH</b>: {} \n\n<b>Do'imiy yashash manzili:</b> {} \n\n<b>Saylov uchastkasi:</b> {} \n\n<b>Web sayt:</b> {}".format(
+            full_name(voter), voter['address'], voter['station'], url_website
         )
         # update.message.reply_html()
     else:
@@ -577,3 +601,26 @@ main()
 
 #              MessageHandler(Filters.regex(
 #                 '^(' + TEXT_BTN_GO_TO_HOME[UZ] + '|' + TEXT_BTN_GO_TO_HOME[RU] + ')$'), go_back_menu)
+
+
+"""
+number
+sector
+number_voters
+name_mfy
+building
+building_address
+cadastre
+chairman
+phone_ch
+position_ch
+assistant
+phone_a
+position_a
+secretary
+phone_s
+position_s
+latitude
+longitude
+
+"""

@@ -9,7 +9,7 @@ bot link: http://t.me/yakkasaroy_saylov_bot
 from docx import Document
 from db_helper import StationsDBHelper
 
-document = Document('saylov-yakkasaroy.docx')
+document = Document('stations-info/station-info.docx')
 table = document.tables[0]
 
 data = []
@@ -24,20 +24,17 @@ for i, row in enumerate(table.rows):
         keys = tuple(text)
         continue
     row_data = dict(zip(keys, text))
-    # print(row_data)
     my_list = []
     for item in row_data:
         my_list.append(row_data[item])
     my_list[8] = "+998(" + my_list[8][:2]+")"+my_list[8][2:]
     my_list[11] = "+998(" + my_list[11][:2]+")"+my_list[11][2:]
     my_list[14] = "+998(" + my_list[14][:2]+")"+my_list[14][2:]
-    # print(my_list)
     db.set_station(tuple(my_list))
-    
 
 
 """
 https://www.geeksforgeeks.org/how-to-import-csv-file-in-sqlite-database-using-python/
-https://www.tutorialspoint.com/sqlite/sqlite_python.htm
+https://www.tutorialspoint.com/sqlite/sqlite_python.html
 
 """

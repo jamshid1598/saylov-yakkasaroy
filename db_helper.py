@@ -30,7 +30,10 @@ class StationsDBHelper:
     def set_station(self, record):
         # print(len(record))
         self.cursor.execute(
-            "INSERT INTO stations(number,sector,number_voters,name_mfy,building,building_address,cadastre,chairman,phone_ch,position_ch,assistant,phone_a,position_a,secretary,phone_s,position_s,latitude,longitude) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+            "INSERT INTO stations(number,sector,number_voters,name_mfy,building,"
+            "building_address,cadastre,chairman,phone_ch,position_ch,assistant,"
+            "phone_a,position_a,secretary,phone_s,position_s,latitude,longitude) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
             (
                 int(record[0]),int(record[1]), int(record[2]),
                 record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10],record[11],record[12],record[13],record[14],record[15],
@@ -50,10 +53,18 @@ class VotersDBHelper:
     
     def get_voter_by_pasport(self, pasport_data):
         print(pasport_data)
-        try:
-            voter=self.cursor.execute('select * from voters where pasport=?', (pasport_data,)).fetchone()
-        except:
-            voter=None
+        for db_number in range(543, 578):
+            try:
+                voter=self.cursor.execute(f'select * from station{db_number} where passport=?', (pasport_data,)).fetchone()
+            except:
+                voter=None
+            if voter is not None:
+                break
+        # voter=self.cursor.execute('select * from station544 where passport=?', (pasport_data,)).fetchone()
+        # try:
+        #     voter=self.cursor.execute(f'select * from 544 where passport=?', (pasport_data,)).fetchone()
+        # except:
+        #     voter=None
         return voter
     
     def set_voters(self, record):
